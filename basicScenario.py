@@ -18,4 +18,5 @@ Created on Wed Sep 25 14:07:55 2024
 #   once all lines have been drawn, the final scores are calculated
 
 import board
-print(board.stationTypes)
+b = board.Board()
+print(b.stationType)
