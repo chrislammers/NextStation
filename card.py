@@ -6,29 +6,46 @@ Created on Sat Nov 30 21:41:02 2024
 """
 
 import random
+import pygame
+
 # import time
 
 class Card:
-    def __init__(self, shape, color):
+    def __init__(self, color, shape):
         self.shape = shape
         self.color = color
+        self.image = pygame.image.load(f"assets/{self.color}_{self.shape}.png")
+        
     def __str__(self):
         return f"{self.color} {self.shape}"
+    
+    def draw(self,screen,x,y):
+        screen.blit(self.image, (x,y))
+        
+        
     
     
 class Deck:
     def __init__(self):
         colors = ["Blue", "Pink"]
         shapes = ["Circle", "All", "Triangle", "Square", "Pentagon"]
-        self.deck = [Card(shape, color) for color in colors for shape in shapes]
-        self.deck.append(Card("Junction", "Blue"))
+        self.deck = [Card(color, shape) for color in colors for shape in shapes]
+        self.deck.append(Card("Blue","Junction"))
+        
+        # This is my custom top card to make the deck look nice (basically a filler)
+        self.top_card = Card("Top", "Card")
+        self.deck.insert(0,self.top_card)
+        
         self.pinks = 0
     
-    def get_card(self):
+    def pull_card(self):
         card = self.deck.pop(0)
         self.deck.append(card)
+        print("Drawing", card)
         return card
     
     def shuffle(self):
+        print("Shuffling and resetting deck")
         random.shuffle(self.deck)
+    
         

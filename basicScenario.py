@@ -25,15 +25,17 @@ import pygame
 
 b = board.Board()
 d = card.Deck()
-print(b.stationType)
-print(d.get_card())
-print(d.get_card())
+# b.stationType
+d.pull_card()
+d.pull_card()
 d.shuffle()
-print(d.get_card())
+current_card = d.pull_card()
 
 
 pygame.init()
-screen = pygame.display.set_mode((480, 720))
+SCREEN_H = 720
+SCREEN_W = 720
+screen = pygame.display.set_mode((SCREEN_W, SCREEN_H))
 clock = pygame.time.Clock()
 running = True
 
@@ -41,6 +43,11 @@ while running:
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
     for event in pygame.event.get():
+        if event.type == pygame.KEYUP:
+            # print("keyup")
+            if event.key == pygame.K_d:
+                # print("Drawing card:")
+                current_card = d.pull_card()
         if event.type == pygame.QUIT:
             running = False
 
@@ -48,6 +55,8 @@ while running:
     screen.fill("grey")
 
     # RENDER YOUR GAME HERE
+    
+    current_card.draw(screen,120,100)
 
     # flip() the display to put your work on screen
     pygame.display.flip()

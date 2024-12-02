@@ -50,7 +50,7 @@ class Board:
         
     # def displayBoard(self):
         
-    def get_board_coords(self, board):
+    # def get_board_coords(self, board):
         
     def get_board_shapes(self, shape):
         if 1 > shape > 6:
