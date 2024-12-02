@@ -20,7 +20,11 @@ class Card:
         return f"{self.color} {self.shape}"
     
     def draw(self,screen,x,y):
-        screen.blit(self.image, (x,y))
+        lh = screen.get_size()
+        # print(lh)
+        img = pygame.transform.scale(self.image, (lh[0]-x,lh[1]-y))
+        
+        screen.blit(img, (x,y))
         
         
     
@@ -46,6 +50,8 @@ class Deck:
     
     def shuffle(self):
         print("Shuffling and resetting deck")
+        self.deck.remove(self.top_card)
         random.shuffle(self.deck)
+        self.deck.insert(0,self.top_card)
     
         

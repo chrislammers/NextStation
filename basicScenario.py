@@ -48,6 +48,9 @@ while running:
             if event.key == pygame.K_d:
                 # print("Drawing card:")
                 current_card = d.pull_card()
+            if event.key == pygame.K_a:
+                d.shuffle()
+                current_card = d.pull_card()
         if event.type == pygame.QUIT:
             running = False
 
@@ -56,7 +59,7 @@ while running:
 
     # RENDER YOUR GAME HERE
     
-    current_card.draw(screen,120,100)
+    current_card.draw(screen,2*SCREEN_W/3,2*SCREEN_H/3)
 
     # flip() the display to put your work on screen
     pygame.display.flip()
