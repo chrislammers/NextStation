@@ -26,7 +26,6 @@ class Card:
         
         screen.blit(img, (x,y))
         
-        
     
     
 class Deck:

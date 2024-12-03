@@ -24,20 +24,37 @@ import card
 import pygame
 
 b = board.Board()
+b.get_board_coords()
 d = card.Deck()
 # b.stationType
 d.pull_card()
 d.pull_card()
 d.shuffle()
+print(b.station_list[0])
+print(b.station_list[3])
+print(b.station_list[5])
 current_card = d.pull_card()
 
 
 pygame.init()
+
 SCREEN_H = 720
 SCREEN_W = 720
+
+# Card dimensions: (CARD_W, CARD_H) to (SCREEN_W, SCREEN_H)
+# probably make a surface here for it
+CARD_H = 2*SCREEN_H/3
+CARD_W = 2*SCREEN_W/3
+# Board Dimnsions: (0,0) to (CARD_W, SCREEN_H)
+# TODO: Analyse the Board object for dimensions
+#   adjust the size and spacing of generated board
+#   make a surface for the board
+
 screen = pygame.display.set_mode((SCREEN_W, SCREEN_H))
 clock = pygame.time.Clock()
 running = True
+
+
 
 while running:
     # poll for events
@@ -59,7 +76,14 @@ while running:
 
     # RENDER YOUR GAME HERE
     
-    current_card.draw(screen,2*SCREEN_W/3,2*SCREEN_H/3)
+    # The board
+    # TODO: Render the board using the Board.station_list[]
+    # ABOVE: Board Dimnsions: (0,0) to (CARD_W, SCREEN_H)
+    # maybe make a new surface on the board area?
+    
+    
+    # Card section
+    current_card.draw(screen,CARD_W,CARD_H)
 
     # flip() the display to put your work on screen
     pygame.display.flip()
