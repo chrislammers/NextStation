@@ -49,7 +49,7 @@ CARD_W = 2*SCREEN_W/3
 # TODO: Analyse the Board object for dimensions
 #   adjust the size and spacing of generated board
 #   make a surface for the board
-
+    
 screen = pygame.display.set_mode((SCREEN_W, SCREEN_H))
 clock = pygame.time.Clock()
 running = True
