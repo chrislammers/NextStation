@@ -13,7 +13,7 @@ python3 baseScenario.py
 
 
 ## Notes:
-requires pygame
+requires pygame, numpy (in requirements.txt)
 
 Flutter version folder will most likely be deleted, since it's not being used.
 
