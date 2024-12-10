@@ -9,7 +9,7 @@ In your console, run:
 
 pip install -r requirements.txt
 
-run baseScenario.py
+python3 baseScenario.py
 
 
 ## Notes:
