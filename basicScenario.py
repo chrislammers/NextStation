@@ -81,6 +81,7 @@ while running:
     # ABOVE: Board Dimnsions: (0,0) to (CARD_W, SCREEN_H)
     # maybe make a new surface on the board area?
     
+    b.draw(screen, 0, 0)
     
     # Card section
     current_card.draw(screen,CARD_W,CARD_H)

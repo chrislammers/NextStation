@@ -56,6 +56,8 @@ class Board:
         self.station_index = {1: "Circle", 2: "All", 3: "Triangle",
                               4: "Square", 5: "Pentagon"}
         
+        self.boardShape = self.stationType.shape
+        
         
     # def display_board(self):
         
@@ -86,6 +88,9 @@ class Board:
         return [self.stationType == shape]
     
     def draw(self,screen,x=0,y=0):
+        # print(self.stationType.shape)
+        # Use the Station.draw() function!
+        
         return
         
         

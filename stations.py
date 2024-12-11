@@ -32,10 +32,16 @@ class Station:
         self.station_index = {1: "Circle", 2: "All", 3: "Triangle",
                               4: "Square", 5: "Pentagon"}
         
+        
+        # Testing this feature in main Station object:
+        # Will need functions...
+        self.next = []
+        
+        
     
     
     
-    # Used from my Transit sim. Just use this as a suggestion
+    # Used from my Transit sim. 
     def connectTwoWay(self, station):
         self.inline_list.append(station)
         station.inline_list.append(self)
@@ -57,4 +63,17 @@ class Station:
     
     def __str__(self):
         return f"{self.station_index[self.station_type]} station at {self.location}"
+    
+# Actual station connectivity:
+# Not fully sure how this is going to work. It may be a doubly linked list
+# A linear set of stations would be trivial to implement in an array or a linked list
+# Branches will not be as straightforward with either method
+# Linked lists could get very messy here. The "next" object could be an array, though.
+# Internally debating on whether or not to make a new object for the line, 
+#   or just use the station object that I already have.
+
+# class StationLine:
+#     def __init__(self):
+
+#         pass
         
