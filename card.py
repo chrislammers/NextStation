@@ -45,6 +45,19 @@ class Deck:
         card = self.deck.pop(0)
         self.deck.append(card)
         print("Drawing", card)
+        if card.color == "Pink":
+            self.pinks += 1
+            print("There are", 5-self.pinks, "pink cards left")
+        
+        # pseudocode for the real game loop:
+        # if pinks == 5:
+        #   run: shuffle()
+        #   set: pinks = 0
+        if self.pinks >= 5:
+            self.shuffle()
+            self.pinks = 0
+        
+        
         return card
     
     def shuffle(self):
