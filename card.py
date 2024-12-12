@@ -44,7 +44,7 @@ class Deck:
     def pull_card(self):
         card = self.deck.pop(0)
         self.deck.append(card)
-        print("Drawing", card)
+        print("Pulling", card)
         if card.color == "Pink":
             self.pinks += 1
             print("There are", 5-self.pinks, "pink cards left")

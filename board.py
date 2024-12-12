@@ -56,8 +56,12 @@ class Board:
         self.station_index = {1: "Circle", 2: "All", 3: "Triangle",
                               4: "Square", 5: "Pentagon"}
         
-        self.boardShape = self.stationType.shape
         
+        # TODO: Add a region board (map)
+        #   n by n array containing 1 to x, where x is the number of regions
+        
+        # TODO: Add a thames map
+        #   n by n array with 0 on the north side of the thames, 0 on south
         
     # def display_board(self):
         
@@ -87,9 +91,48 @@ class Board:
         
         return [self.stationType == shape]
     
-    def draw(self,screen,x=0,y=0):
+    def draw(self,screen,x0,y0,x1,y1):
         # print(self.stationType.shape)
-        # Use the Station.draw() function!
+        
+        # Use the Station.draw(screen, x, y) function
+        
+        # draw the board in the area defined by (x0, y0) (x1, y1)
+        #   Pad the edges by some % or number of pixels
+        #   Map the station coordinates to the coordinate range (within padding)
+        #   Draw in the dotted lines between adjacent stations (Station.inline)
+        
+        
+        # Maybe refactor this into a new function:
+        # 5 percent (on all 4 sides)
+        padding = 5
+        
+        totalX = abs(x1-x0)
+        totalY = abs(y1-y0)
+        
+        paddingPixX = round(totalX / padding)
+        paddingPixY = round(totalY / padding)
+        
+        x0 = x0+paddingPixX
+        y0 = y0+paddingPixY
+        x1 = x1-paddingPixX
+        y1 = y1-paddingPixY
+        # new coordinates are the padded coordinates
+        
+        
+        
+        # create coordinates for each station using linspace
+        board_shape = self.stationType.shape
+        # these are maps for stations plotted coordinates
+        #   xPlot = xCoords[Station.location[0]]
+        xCoords = np.linspace(x0,x1,board_shape[0])
+        yCoords = np.linspace(y0,y1,board_shape[1])
+        
+        for station in self.station_list:
+            xPlot = xCoords[station.location[0]]
+            yPlot = yCoords[station.location[1]]
+            # print("Drawing station at", xPlot,yPlot)
+            station.draw(screen, xPlot, yPlot)
+        
         
         return
         

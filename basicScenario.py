@@ -45,7 +45,11 @@ SCREEN_W = 720
 # probably make a surface here for it
 CARD_H = 2*SCREEN_H/3
 CARD_W = 2*SCREEN_W/3
+CardDim = [CARD_W,CARD_H,SCREEN_W,SCREEN_H]
+
 # Board Dimnsions: (0,0) to (CARD_W, SCREEN_H)
+BoardDim = [0,0,CARD_W,SCREEN_H]
+
 # TODO: Analyse the Board object for dimensions
 #   adjust the size and spacing of generated board
 #   make a surface for the board
@@ -81,7 +85,7 @@ while running:
     # ABOVE: Board Dimnsions: (0,0) to (CARD_W, SCREEN_H)
     # maybe make a new surface on the board area?
     
-    b.draw(screen, 0, 0)
+    b.draw(screen, BoardDim[0], BoardDim[1], BoardDim[2], BoardDim[3])
     
     # Card section
     current_card.draw(screen,CARD_W,CARD_H)
