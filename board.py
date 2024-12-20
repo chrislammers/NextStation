@@ -59,9 +59,29 @@ class Board:
         
         # TODO: Add a region board (map)
         #   n by n array containing 1 to x, where x is the number of regions
+        self.station_region = np.array([[10,1,1,2,2,2,2,3,3,11],
+                                        [1,1,1,2,2,2,2,3,3,3],
+                                        [1,1,1,2,2,2,2,3,3,3],
+                                        [4,4,4,5,5,5,5,6,6,6],
+                                        [4,4,4,5,5,5,5,6,6,6],
+                                        [4,4,4,5,5,5,5,6,6,6],
+                                        [4,4,4,5,5,5,5,6,6,6],
+                                        [7,7,7,8,8,8,8,9,9,9],
+                                        [7,7,7,8,8,8,8,9,9,9],
+                                        [12,7,7,8,8,8,8,9,9,13]])
         
         # TODO: Add a thames map
-        #   n by n array with 0 on the north side of the thames, 0 on south
+        #   n by n array with 0 on the north side of the thames, 1 on south
+        self.station_region = np.array([[0,0,0,0,0,0,0,0,0,0],
+                                        [0,0,0,0,0,0,0,0,0,0],
+                                        [0,0,0,0,0,0,0,0,0,0],
+                                        [0,0,0,0,0,0,0,0,0,0],
+                                        [1,1,1,1,0,0,0,0,0,0],
+                                        [1,1,1,1,1,0,0,1,1,1],
+                                        [1,1,1,1,1,1,1,1,1,1],
+                                        [1,1,1,1,1,1,1,1,1,1],
+                                        [1,1,1,1,1,1,1,1,1,1],
+                                        [1,1,1,1,1,1,1,1,1,1]])
         
     # def display_board(self):
         
@@ -72,10 +92,10 @@ class Board:
         # Use Station.createConnections
         for yy in range(len(self.stationType)):
             for xx in range(len(self.stationType[yy])):
-                if self.stationType[xx][yy] != 0:
+                if self.stationType[yy][xx] != 0:
                     new_station = stations.Station(xx,yy,
-                                                   self.stationType[xx][yy],
-                                                   self.touristStations[xx][yy]
+                                                   self.stationType[yy][xx],
+                                                   self.touristStations[yy][xx]
                                                    )
                     self.station_list.append(new_station)
         return
@@ -126,6 +146,7 @@ class Board:
         #   xPlot = xCoords[Station.location[0]]
         xCoords = np.linspace(x0,x1,board_shape[0])
         yCoords = np.linspace(y0,y1,board_shape[1])
+        
         
         for station in self.station_list:
             xPlot = xCoords[station.location[0]]
