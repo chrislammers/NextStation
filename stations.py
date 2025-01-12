@@ -37,7 +37,7 @@ class Station:
         
         # Testing this feature in main Station object:
         self.next = []
-        self.image = pygame.image.load(f"assets/Blue_{self.station_index[self.station_type]}.png")
+        self.image = pygame.image.load(f"assets/Cards/Blue_{self.station_index[self.station_type]}.png")
         
         
     
