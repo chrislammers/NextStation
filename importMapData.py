@@ -1,0 +1,149 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Jan 12 11:16:42 2025
+
+@author: chris
+"""
+
+import json
+import matplotlib.pyplot as plt
+import pandas as pd
+import requests
+import numpy as np
+
+# Testing out the board using real data
+
+# my first piece of data is the tube map in a JSON file
+
+# Step 1
+
+# The files can be pulled from OpenStreetMaps (implemented)
+# Individual file parsing:
+#   Need Lat/Lon
+#   OPTIONAL: Station Name for future use
+#   
+
+# Step 1.5:
+# OPTIONAL: in the case of london, there are too many stations to fit on the grid,
+#   implement a clustering algorithm to find some square shape in the lat/lon.
+#   This strategy may be used when there is one or more of:
+#       A: Too many stations 
+#       B: Uneven distribution of stations
+
+# Step 2
+# Normalize the lat/lon data to the limits of the grid
+
+# Step 3
+# Round the new lat/lons to the grid lines
+#   Remove overlapping stations. (ties into step 1.5)
+#   If there are still overlapping stations, apply a light random filter, 
+#       more intense on the edges of the grid
+
+# Step 4
+# Distribute starting stations, tourist attractions, and station types (shape).
+
+# River Data:
+# Will need to be pulled from open street map. More thought needed.
+
+
+
+# Individual file parsing:
+
+overpass_url = "http://overpass-api.de/api/interpreter"
+
+loc = "Greater London"
+
+cityDict = {"1": "Greater London", "2": "New York City", "3": "Toronto", "4": "Wien"}
+usrInp = ""
+print("Enter a number to choose a city:")
+print(cityDict)
+
+while (usrInp not in cityDict.keys()):
+    usrInp = input()
+    
+loc = cityDict[usrInp]
+
+query = f"""
+[out:json][timeout:25];
+area["name"="{loc}"]->.searchArea;
+(
+  node["railway"="station"]["station"="subway"](area.searchArea);
+  way["railway"="station"]["station"="subway"](area.searchArea);
+  relation["railway"="station"]["station"="subway"](area.searchArea);
+);
+out body;
+>;
+out skel qt;
+"""
+
+
+
+response = requests.get(overpass_url, params={'data': query})
+geojson_data = response.json()
+[[]]
+# Save as a GeoJSON file
+with open('data.geojson', 'w') as f:
+    json.dump(geojson_data, f)
+    
+
+# Load GeoJSON file
+with open('data.geojson', 'r') as f:
+    geo_data = json.load(f)
+
+# Define the bounding box for your area (min_lat, min_lon, max_lat, max_lon)
+bounding_box = {
+    "min_lat": 40.0,
+    "max_lat": 41.0,
+    "min_lon": -74.0,
+    "max_lon": -73.0,
+}
+
+# Function to check if a point is within the bounding box
+def is_within_bounding_box(lat, lon, bbox):
+    return bbox["min_lat"] <= lat <= bbox["max_lat"] and bbox["min_lon"] <= lon <= bbox["max_lon"]
+
+# Extract metro stations within the bounding box
+metro_stations = []
+
+# print(geo_data)
+print(geo_data.keys())
+print(geo_data["elements"][0])
+print(len(geo_data["elements"]))
+
+stations = np.ndarray((len(geo_data["elements"]),2))
+# print(stations)
+
+for ii in range(len(geo_data["elements"])):
+    stations[ii][0] = geo_data["elements"][ii]["lat"]
+    stations[ii][1] = geo_data["elements"][ii]["lon"]
+    
+    
+# df = pd.DataFrame(geo_data["elements"])
+# df = df.filter(["lat", "lon"])
+
+
+# print(df[13])
+
+# plt.figure(1)
+# plt.scatter(df["lon"], df["lat"])
+# plt.savefig(f"{cityDict[usrInp]}.png")
+
+
+
+plt.figure(1)
+plt.scatter(stations[:,1], stations[:,0])
+plt.savefig(f"{cityDict[usrInp]}.png")
+
+
+
+# for feature in geo_data["elements"]:
+#     properties = feature["properties"]
+#     geometry = feature["geometry"]
+    
+#     if properties.get("station") == "subway" or properties.get("railway") == "station":
+#         lat, lon = geometry["coordinates"][1], geometry["coordinates"][0]
+#         if is_within_bounding_box(lat, lon, bounding_box):
+#             metro_stations.append(properties["name"])
+
+# print("Metro stations in the area:", metro_stations)
+
