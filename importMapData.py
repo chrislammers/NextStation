@@ -10,6 +10,12 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import requests
 import numpy as np
+output_to_png = True
+
+# creating a function that gets applied to the real station coordinates to densify the outer regions and thin out the inner regions
+x = np.linspace(-1,1,20)
+print(x)
+print(np.sin(x*np.pi/2))
 
 # Testing out the board using real data
 
@@ -80,7 +86,7 @@ out skel qt;
 
 response = requests.get(overpass_url, params={'data': query})
 geojson_data = response.json()
-[[]]
+# [[]]
 # Save as a GeoJSON file
 with open('data.geojson', 'w') as f:
     json.dump(geojson_data, f)
@@ -106,18 +112,29 @@ def is_within_bounding_box(lat, lon, bbox):
 metro_stations = []
 
 # print(geo_data)
-print(geo_data.keys())
-print(geo_data["elements"][0])
-print(len(geo_data["elements"]))
+# print(geo_data.keys())
+# print(geo_data["elements"][0])
+# print(len(geo_data["elements"]))
 
 stations = np.ndarray((len(geo_data["elements"]),2))
 # print(stations)
 
+
 for ii in range(len(geo_data["elements"])):
     stations[ii][0] = geo_data["elements"][ii]["lat"]
     stations[ii][1] = geo_data["elements"][ii]["lon"]
-    
-    
+
+# kdsj
+def NormalizeData(data):
+    return 2*(data - np.min(data)) / (np.max(data) - np.min(data)) - 1
+
+stations[:,1] = NormalizeData(stations[:,1])
+stations[:,0] = NormalizeData(stations[:,0])
+
+stations[:,1] = np.sin(stations[:,1]*np.pi/2)
+stations[:,0] = np.sin(stations[:,0]*np.pi/2)
+
+
 # df = pd.DataFrame(geo_data["elements"])
 # df = df.filter(["lat", "lon"])
 
@@ -130,9 +147,12 @@ for ii in range(len(geo_data["elements"])):
 
 
 
-plt.figure(1)
-plt.scatter(stations[:,1], stations[:,0])
-plt.savefig(f"{cityDict[usrInp]}.png")
+if output_to_png:
+    print(f"Outputting transformed station map to {cityDict[usrInp]}.png")
+    plt.figure(1)
+    plt.scatter(stations[:,1], stations[:,0])
+    plt.savefig(f"{cityDict[usrInp]}.png")
+
 
 
 

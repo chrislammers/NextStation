@@ -124,6 +124,7 @@ class Board:
         
         # Maybe refactor this into a new function:
         # 5 percent (on all 4 sides)
+        # Right now, this is not a percent. will need to fix.
         padding = 5
         
         totalX = abs(x1-x0)
