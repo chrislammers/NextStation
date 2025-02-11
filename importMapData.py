@@ -10,12 +10,9 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import requests
 import numpy as np
+import stations
 output_to_png = True
 
-# creating a function that gets applied to the real station coordinates to densify the outer regions and thin out the inner regions
-x = np.linspace(-1,1,20)
-print(x)
-print(np.sin(x*np.pi/2))
 
 # Testing out the board using real data
 
@@ -51,6 +48,16 @@ print(np.sin(x*np.pi/2))
 # River Data:
 # Will need to be pulled from open street map. More thought needed.
 
+
+
+# ALT: Take raw coordinates of stations in the city. Implement clustering 
+#       algorithm that identifies areas with a good enough spread.
+
+def to_png(stations, city):
+    print(f"Outputting transformed station map to {cityDict[usrInp]}.png")
+    plt.figure(figsize=(16, 12), dpi=80)
+    plt.scatter(stations[:,1], stations[:,0])
+    plt.savefig(f"{city}.png")
 
 
 # Individual file parsing:
@@ -131,9 +138,22 @@ def NormalizeData(data):
 stations[:,1] = NormalizeData(stations[:,1])
 stations[:,0] = NormalizeData(stations[:,0])
 
-stations[:,1] = np.sin(stations[:,1]*np.pi/2)
-stations[:,0] = np.sin(stations[:,0]*np.pi/2)
 
+# stations[:,1] = np.sin(stations[:,1]*np.pi/2)
+# stations[:,0] = np.sin(stations[:,0]*np.pi/2)
+def apply_sin_func(data):
+    return np.sin(data*np.pi/2)
+
+
+
+stations[:,1] = apply_sin_func(stations[:,1])
+stations[:,0] = apply_sin_func(stations[:,0])
+
+# Takes a set of points, rounds them to the grid (10x10)
+# unsure if I want this function (and previous) to be applied to a 2D Array, or just a 1D Array
+# This will need to use the Station object
+def snap_points_to_grid(data):
+    pass
 
 # df = pd.DataFrame(geo_data["elements"])
 # df = df.filter(["lat", "lon"])
@@ -148,10 +168,11 @@ stations[:,0] = np.sin(stations[:,0]*np.pi/2)
 
 
 if output_to_png:
-    print(f"Outputting transformed station map to {cityDict[usrInp]}.png")
-    plt.figure(1)
-    plt.scatter(stations[:,1], stations[:,0])
-    plt.savefig(f"{cityDict[usrInp]}.png")
+    to_png(stations, cityDict[usrInp])
+    # print(f"Outputting transformed station map to {cityDict[usrInp]}.png")
+    # plt.figure(figsize=(16, 12), dpi=80)
+    # plt.scatter(stations[:,1], stations[:,0])
+    # plt.savefig(f"{cityDict[usrInp]}.png")
 
 
 
