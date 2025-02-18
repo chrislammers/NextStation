@@ -153,8 +153,21 @@ stations[:,0] = apply_sin_func(stations[:,0])
 # unsure if I want this function (and previous) to be applied to a 2D Array, or just a 1D Array
 # This will need to use the Station object
 def snap_points_to_grid(data):
+    # This function will take 2D Array: "data", of coordinates, and round 
+    #   them to a 10x10 grid (custom grid sizes to come?)
+    # Requires: NormalizeData() function
+    
+    # Normalize, then multiply by 9, then round to integer
+    data[:,1] = NormalizeData(data[:,1])
+    data[:,0] = NormalizeData(data[:,0])
+    
+    data = data * 9
+    
+    data = data.round()
+    return data
     pass
 
+stations = snap_points_to_grid(stations)
 # df = pd.DataFrame(geo_data["elements"])
 # df = df.filter(["lat", "lon"])
 
