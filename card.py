@@ -14,7 +14,7 @@ class Card:
     def __init__(self, color, shape):
         self.shape = shape
         self.color = color
-        self.image = pygame.image.load(f"assets/{self.color}_{self.shape}.png")
+        self.image = pygame.image.load(f"assets/Cards/{self.color}_{self.shape}.png")
         
     def __str__(self):
         return f"{self.color} {self.shape}"
