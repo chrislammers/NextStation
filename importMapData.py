@@ -53,10 +53,10 @@ output_to_png = True
 # ALT: Take raw coordinates of stations in the city. Implement clustering 
 #       algorithm that identifies areas with a good enough spread.
 
-def to_png(stations, city):
+def to_png(stationList, city):
     print(f"Outputting transformed station map to {cityDict[usrInp]}.png")
     plt.figure(figsize=(16, 12), dpi=80)
-    plt.scatter(stations[:,1], stations[:,0])
+    plt.scatter(stationList[:,1], stationList[:,0])
     plt.savefig(f"{city}.png")
 
 
@@ -123,20 +123,20 @@ metro_stations = []
 # print(geo_data["elements"][0])
 # print(len(geo_data["elements"]))
 
-stations = np.ndarray((len(geo_data["elements"]),2))
+stationList = np.ndarray((len(geo_data["elements"]),2))
 # print(stations)
 
 
 for ii in range(len(geo_data["elements"])):
-    stations[ii][0] = geo_data["elements"][ii]["lat"]
-    stations[ii][1] = geo_data["elements"][ii]["lon"]
+    stationList[ii][0] = geo_data["elements"][ii]["lat"]
+    stationList[ii][1] = geo_data["elements"][ii]["lon"]
 
 # kdsj
 def NormalizeData(data):
     return 2*(data - np.min(data)) / (np.max(data) - np.min(data)) - 1
 
-stations[:,1] = NormalizeData(stations[:,1])
-stations[:,0] = NormalizeData(stations[:,0])
+stationList[:,1] = NormalizeData(stationList[:,1])
+stationList[:,0] = NormalizeData(stationList[:,0])
 
 
 # stations[:,1] = np.sin(stations[:,1]*np.pi/2)
@@ -146,8 +146,8 @@ def apply_sin_func(data):
 
 
 
-stations[:,1] = apply_sin_func(stations[:,1])
-stations[:,0] = apply_sin_func(stations[:,0])
+stationList[:,1] = apply_sin_func(stationList[:,1])
+stationList[:,0] = apply_sin_func(stationList[:,0])
 
 # Takes a set of points, rounds them to the grid (10x10)
 # unsure if I want this function (and previous) to be applied to a 2D Array, or just a 1D Array
@@ -167,7 +167,7 @@ def snap_points_to_grid(data):
     return data
     pass
 
-stations = snap_points_to_grid(stations)
+stationList = snap_points_to_grid(stationList)
 # df = pd.DataFrame(geo_data["elements"])
 # df = df.filter(["lat", "lon"])
 
@@ -181,7 +181,7 @@ stations = snap_points_to_grid(stations)
 
 
 if output_to_png:
-    to_png(stations, cityDict[usrInp])
+    to_png(stationList, cityDict[usrInp])
     # print(f"Outputting transformed station map to {cityDict[usrInp]}.png")
     # plt.figure(figsize=(16, 12), dpi=80)
     # plt.scatter(stations[:,1], stations[:,0])
