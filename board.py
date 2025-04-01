@@ -45,7 +45,18 @@ stationAttractionsArray = np.array([[0,0,0,0,0,0,0,0,0,0],
                                 [0,0,0,0,0,0,0,0,0,0],
                                 [0,0,0,0,1,0,0,0,0,0]])
 
-stationRegionArray = np.array([[0,0,0,0,0,0,0,0,0,0],
+stationRegionArray = np.array([[10,1,1,2,2,2,2,3,3,11],
+                                [1,1,1,2,2,2,2,3,3,3],
+                                [1,1,1,2,2,2,2,3,3,3],
+                                [4,4,4,5,5,5,5,6,6,6],
+                                [4,4,4,5,5,5,5,6,6,6],
+                                [4,4,4,5,5,5,5,6,6,6],
+                                [4,4,4,5,5,5,5,6,6,6],
+                                [7,7,7,8,8,8,8,9,9,9],
+                                [7,7,7,8,8,8,8,9,9,9],
+                                [12,7,7,8,8,8,8,9,9,13]])
+
+stationRiverArray = np.array([[0,0,0,0,0,0,0,0,0,0],
                                 [0,0,0,0,0,0,0,0,0,0],
                                 [0,0,0,0,0,0,0,0,0,0],
                                 [0,0,0,0,0,0,0,0,0,0],
@@ -58,19 +69,24 @@ stationRegionArray = np.array([[0,0,0,0,0,0,0,0,0,0],
 
 
 class Board:
-    def __init__(self, staList = [], staType=stationTypeArray, staStart=stationStartArray, staAttr=stationAttractionsArray, staReg=stationRegionArray):
+    def __init__(self, staList = [], staType=stationTypeArray, staStart=stationStartArray, staAttr=stationAttractionsArray, staRiv=stationRiverArray, staReg=stationRegionArray):
         # TODO: All arrays should be passed in as default values. 
         #   there will be an option to generate the board from the arrays or the list of Station objects
         # List of all Station objects fo this board
         self.station_list = staList.copy()
         
         
-        # these three arrays describe the entire board
+        # these arrays can describe the entire 10x10 board
+        #   10x10 array --> 10x10 board
+        
+        # Each number is a station type
+        #   the number describes the type, location decribes the location
         self.stationType = staType.copy()
     
-    
+        # This array describes where each line starts. Each number corresponds to the start station of that type
         self.stationStart = staStart.copy()
         
+        # Attraction locations.
         self.stationAttractions = staAttr.copy()
         
         # basic station index for the station_type to text
@@ -78,25 +94,19 @@ class Board:
                               4: "Square", 5: "Pentagon"}
         
         
-        # station_region will be global. I'll leave it in here
-        # TODO: Add a region board (map)
+        # stationRegion will be global. I'll leave it in here
+        # For real gameplay, A station in each region shuld be requiered.
+        
+        # Region board (map)
         #   n by n array containing 1 to x, where x is the number of regions
-        self.station_region = np.array([[10,1,1,2,2,2,2,3,3,11],
-                                        [1,1,1,2,2,2,2,3,3,3],
-                                        [1,1,1,2,2,2,2,3,3,3],
-                                        [4,4,4,5,5,5,5,6,6,6],
-                                        [4,4,4,5,5,5,5,6,6,6],
-                                        [4,4,4,5,5,5,5,6,6,6],
-                                        [4,4,4,5,5,5,5,6,6,6],
-                                        [7,7,7,8,8,8,8,9,9,9],
-                                        [7,7,7,8,8,8,8,9,9,9],
-                                        [12,7,7,8,8,8,8,9,9,13]])
+        self.stationRegion = staReg
         
         # When generating station maps, I think river boundaries could also be generated
-        #   Using map data.
-        # TODO: Add a thames map
+        #   using map data. See importMapData.py
+        
+        # Thames boolean Array
         #   n by n array with 0 on the north side of the thames, 1 on south
-        self.stationRegion = staReg
+        self.stationRiver = staRiv
         
     # def display_board(self):
         
@@ -119,9 +129,31 @@ class Board:
     
     # TODO: take a list of Station objects, turn it into multiple arrays representing the board
     #   This function will essentially invert get_board_coords()
-    def get_board_arrays(self, staList):
+    def get_board_arrays(self):
+        # Probably should run a check to see if the station list is sufficient
+        
+        staType = np.zeros((10,10))
+        staStart = np.zeros((10,10))
+        staAttr = np.zeros((10,10))
+        
+        for station in self.station_list:
+            x = station.location[0]
+            y = station.location[1]
+            # Make sure this works.
+            staType[y][x] = station.station_type
+            
+            # TODO: Let the start points be generated. add is_start to Station object
+            staStart[y][x] = 0
+            
+            staAttr[y][x] = station.isAttraction
+        
+        
         pass
     
+    # TODO: Document what this function does, where it is used.
+    
+    # This function returns a boolean array of the selected type
+    # Not surrently being used.
     def get_board_shapes(self, shape):
         if 1 > shape > 6:
             print("Error: pick a number between 1 and 6")

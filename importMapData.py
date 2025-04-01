@@ -11,6 +11,7 @@ import pandas as pd
 import requests
 import numpy as np
 import stations
+import board
 output_to_png = True
 
 
@@ -152,7 +153,7 @@ stationList[:,0] = apply_sin_func(stationList[:,0])
 # Takes a set of points, rounds them to the grid (10x10)
 # unsure if I want this function (and previous) to be applied to a 2D Array, or just a 1D Array
 # This will need to use the Station object
-def snap_points_to_grid(data):
+def snap_points_to_grid(data, keepOverlap=False):
     # This function will take 2D Array: "data", of coordinates, and round 
     #   them to a 10x10 grid (custom grid sizes to come?)
     # Requires: NormalizeData() function
@@ -164,19 +165,23 @@ def snap_points_to_grid(data):
     data = data * 9
     
     data = data.round()
+    
+    if not keepOverlap:
+        # Remove overlapping stations
+        print(data)
+        pass
     return data
     pass
 
-stationList = snap_points_to_grid(stationList)
+stationList = snap_points_to_grid(stationList, keepOverlap=False)
 # df = pd.DataFrame(geo_data["elements"])
 # df = df.filter(["lat", "lon"])
 
 
-# print(df[13])
-
-# plt.figure(1)
-# plt.scatter(df["lon"], df["lat"])
-# plt.savefig(f"{cityDict[usrInp]}.png")
+# TODO: Create a function that takes the geodata, creates a list of Station objects
+def generate_station_list(geo_list):
+    
+    pass
 
 
 
@@ -188,16 +193,4 @@ if output_to_png:
     # plt.savefig(f"{cityDict[usrInp]}.png")
 
 
-
-
-# for feature in geo_data["elements"]:
-#     properties = feature["properties"]
-#     geometry = feature["geometry"]
-    
-#     if properties.get("station") == "subway" or properties.get("railway") == "station":
-#         lat, lon = geometry["coordinates"][1], geometry["coordinates"][0]
-#         if is_within_bounding_box(lat, lon, bounding_box):
-#             metro_stations.append(properties["name"])
-
-# print("Metro stations in the area:", metro_stations)
 

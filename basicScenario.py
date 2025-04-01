@@ -53,6 +53,7 @@ BoardDim = [0,0,CARD_W,SCREEN_H]
 # TODO: Analyse the Board object for dimensions
 #   adjust the size and spacing of generated board
 #   make a surface for the board
+#   Low priority
     
 screen = pygame.display.set_mode((SCREEN_W, SCREEN_H))
 clock = pygame.time.Clock()
@@ -78,7 +79,7 @@ while running:
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("grey")
 
-    # RENDER YOUR GAME HERE
+    # RENDER THE GAME HERE
     
     # The board
     # TODO: Render the board using the Board.station_list[]
