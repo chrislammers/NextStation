@@ -54,6 +54,8 @@ output_to_png = True
 # ALT: Take raw coordinates of stations in the city. Implement clustering 
 #       algorithm that identifies areas with a good enough spread.
 
+# TODO: Put everthing into class/function form for portability
+
 def to_png(stationList, city):
     print(f"Outputting transformed station map to {cityDict[usrInp]}.png")
     plt.figure(figsize=(16, 12), dpi=80)
@@ -153,7 +155,7 @@ stationList[:,0] = apply_sin_func(stationList[:,0])
 # Takes a set of points, rounds them to the grid (10x10)
 # unsure if I want this function (and previous) to be applied to a 2D Array, or just a 1D Array
 # This will need to use the Station object
-def snap_points_to_grid(data, keepOverlap=False):
+def snap_points_to_grid(data, removeOverlap=True):
     # This function will take 2D Array: "data", of coordinates, and round 
     #   them to a 10x10 grid (custom grid sizes to come?)
     # Requires: NormalizeData() function
@@ -166,9 +168,17 @@ def snap_points_to_grid(data, keepOverlap=False):
     
     data = data.round()
     
-    if not keepOverlap:
+    if removeOverlap:
+        # This would be cool if the station names were preserved.
+        
         # Remove overlapping stations
-        print(data)
+        # Sort Gridpoints [y,x] by y
+        #   Then for each y, sort by x.
+        
+        # Every identical value should be adjacent to each other
+        # For each value, if the next value in the list is the same, remove it.
+        
+        # print(data)
         pass
     return data
     pass
