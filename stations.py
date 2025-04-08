@@ -11,6 +11,10 @@ Created on Wed Sep 25 14:41:36 2024
 import pygame
 
 def isInLine(p1, p2):
+    # TODO: add diagonal connections
+    # TODO: remove all but the closest connection in each direction
+
+    #   Depth first Search
     # Check if p1 is in line with p2.
     
     if p1[0] == p2[0] or p1[1] == p2[1]:
@@ -22,7 +26,12 @@ def isInLine(p1, p2):
 
 class Station:
     def __init__(self, x, y, st_type, isAttr):
-        # connections: list of len 0 to 8, other Stations
+              
+        # inline_list: list of stations: len 8: DFS from Station x,y in in each 8 directions
+        #   N is first [0], clockwise to NW last [7]
+        #   If nothing is found in a direction, that slot will be null (or 0)
+        #   At the end, the closest station in each direction will be in the corresponding slot
+        
         self.inline_list = []
         # type of station: integer (0: empty, 1: circ, 2: ?, 3: tri, 4: squ, 5: pent)
         self.station_type = st_type
