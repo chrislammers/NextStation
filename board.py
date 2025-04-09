@@ -110,6 +110,7 @@ class Board:
         
     # def display_board(self):
         
+    # This function creates a stationList from Arrays
     def get_board_coords(self):
         # TODO: Add a try/catch to make sure there are sufficient arrays
         
@@ -139,7 +140,7 @@ class Board:
         for station in self.station_list:
             x = station.location[0]
             y = station.location[1]
-            # Make sure this works.
+            # TODO: Make sure this works.
             staType[y][x] = station.station_type
             
             # TODO: Let the start points be generated. add is_start to Station object

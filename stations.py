@@ -65,7 +65,7 @@ class Station:
         self.inline_list.append(station)
         station.inline_list.append(self)
     
-    def createConnections(self, stationList):
+    def createConnections(self, stationList, stationArray):
         # stationList is a list of existing stations.
         # My original idea for the algorithm:
         # for each station, add it to connections if the connection is on the 8 ordinal and cardinal directions
@@ -91,6 +91,11 @@ class Station:
                 if currentLoc < boardXMin or currentLoc < boardYMin or currentLoc > boardXMax or currentLoc > boardYMax:
                     self.inline_list[ii] = 0
                     status = False
+                    
+                else: 
+                    # Compare the currentLoc to the array  
+                    pass
+                
                     
                 
         
