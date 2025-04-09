@@ -9,6 +9,14 @@ Created on Wed Sep 25 14:41:36 2024
 # Station classes
 
 import pygame
+import numpy as np
+
+
+directionVectors = np.array([[0,1],[1,1],[1,0],[1,-1],[0,-1],[-1,-1],[-1,0],[-1,1]])
+boardXMin = 0
+boardXMax = 9
+boardYMin = 0
+boardYMax = 9
 
 def isInLine(p1, p2):
     # TODO: add diagonal connections
@@ -23,7 +31,6 @@ def isInLine(p1, p2):
     return False
 
 
-
 class Station:
     def __init__(self, x, y, st_type, isAttr):
               
@@ -32,7 +39,7 @@ class Station:
         #   If nothing is found in a direction, that slot will be null (or 0)
         #   At the end, the closest station in each direction will be in the corresponding slot
         
-        self.inline_list = []
+        self.inline_list = np.zeros(8)
         # type of station: integer (0: empty, 1: circ, 2: ?, 3: tri, 4: squ, 5: pent)
         self.station_type = st_type
         # location on the map: list of [x,y]
@@ -53,16 +60,40 @@ class Station:
     
     
     # Used from my Transit sim. 
+    #   This may not be the best to use here.
     def connectTwoWay(self, station):
         self.inline_list.append(station)
         station.inline_list.append(self)
     
     def createConnections(self, stationList):
         # stationList is a list of existing stations.
+        # My original idea for the algorithm:
         # for each station, add it to connections if the connection is on the 8 ordinal and cardinal directions
         #   For now, Just N, E, S, W
         # TODO: Add NE, SE, NW, and SW
         # TODO: Only Allow the closest station in each direction to be on the list
+        
+        # New Algorithm: DFS from Station location [x,y] in in each 8 directions
+        #   (0,1) is first, then rotate clockwise to (1,-1) last in the array
+        #   If nothing is found in a direction, that slot will be null (or 0)
+        #   At the end, the closest station in each direction will be in the corresponding slot
+        
+        
+        
+        for ii in range(len(directionVectors)):
+            status = True
+            currentDir = directionVectors[ii]
+            currentLoc = self.location.copy()
+            
+            while status:
+                currentLoc += currentDir
+                # out of bounds check:
+                if currentLoc < boardXMin or currentLoc < boardYMin or currentLoc > boardXMax or currentLoc > boardYMax:
+                    self.inline_list[ii] = 0
+                    status = False
+                    
+                
+        
         
         for station in stationList:
             # probably should have type safety

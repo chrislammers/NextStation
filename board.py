@@ -116,7 +116,7 @@ class Board:
         # Loop through stationType
         # create a Station object for each non-zero
         #   check stationAttractions
-        # Use Station.createConnections
+        # Use Station.createConnections to create the list of connections
         for yy in range(len(self.stationType)):
             for xx in range(len(self.stationType[yy])):
                 if self.stationType[yy][xx] != 0:
