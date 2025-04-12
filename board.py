@@ -69,9 +69,15 @@ stationRiverArray = np.array([[0,0,0,0,0,0,0,0,0,0],
 
 
 class Board:
+    # The board will be stored twice. In a set of Arrays, and a list of station objects
+    #   Both of these data structures will hold the same information.
+
     def __init__(self, staList = [], staType=stationTypeArray, staStart=stationStartArray, staAttr=stationAttractionsArray, staRiv=stationRiverArray, staReg=stationRegionArray):
         # TODO: All arrays should be passed in as default values. 
         #   there will be an option to generate the board from the arrays or the list of Station objects
+        
+        
+        
         # List of all Station objects fo this board
         self.station_list = staList.copy()
         
@@ -123,13 +129,14 @@ class Board:
                 if self.stationType[yy][xx] != 0:
                     new_station = stations.Station(xx,yy,
                                                    self.stationType[yy][xx],
-                                                   self.stationAttractions[yy][xx]
-                                                   )
+                                                   self.stationAttractions[yy][xx],
+                                                   self.stationStart[yy][xx],)
                     self.station_list.append(new_station)
         return
     
-    # TODO: take a list of Station objects, turn it into multiple arrays representing the board
+    # Takes a list of Station objects, turn it into multiple arrays representing the board
     #   This function will essentially invert get_board_coords()
+    # TODO: implement Tests to verify that these functions are working correctly
     def get_board_arrays(self):
         # Probably should run a check to see if the station list is sufficient
         
@@ -143,15 +150,16 @@ class Board:
             # TODO: Make sure this works.
             staType[y][x] = station.station_type
             
-            # TODO: Let the start points be generated. add is_start to Station object
-            staStart[y][x] = 0
+            if station.isStart:
+                staStart[y][x] = station.station_type
+            else:
+                staStart[y][x] = 0
             
             staAttr[y][x] = station.isAttraction
         
         
         pass
     
-    # TODO: Document what this function does, where it is used.
     
     # This function returns a boolean array of the selected type
     # Not surrently being used.
@@ -179,7 +187,7 @@ class Board:
         
         # Maybe refactor this into a new function:
         # 5 percent (on all 4 sides)
-        # Right now, this is not a percent. will need to fix.
+        # TODO: Right now, this is not a percent. will need to fix.
         padding = 5
         
         totalX = abs(x1-x0)

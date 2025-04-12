@@ -32,13 +32,15 @@ def isInLine(p1, p2):
 
 
 class Station:
-    def __init__(self, x, y, st_type, isAttr):
+    def __init__(self, x, y, st_type, isAttr, isStart=0):
               
         # inline_list: list of stations: len 8: DFS from Station x,y in in each 8 directions
         #   N is first [0], clockwise to NW last [7]
         #   If nothing is found in a direction, that slot will be null (or 0)
         #   At the end, the closest station in each direction will be in the corresponding slot
         
+        # List of possible connection stations:
+        #   This may need to be a list of indicies in the Boards Station List
         self.inline_list = np.zeros(8)
         # type of station: integer (0: empty, 1: circ, 2: ?, 3: tri, 4: squ, 5: pent)
         self.station_type = st_type
@@ -46,6 +48,10 @@ class Station:
         self.location = [x,y]
         # tourist, for later: boolean
         self.isAttraction = isAttr
+        # Is this a start point?: Boolean (there can only be 1 start point per station type)
+        # If no value is supplied or the board is generating from a list (eg. Real Lat/lon data),
+        #   these will need to be generated automatically
+        self.isStart = isStart
         # # basic station index for the station_type to text
         self.station_index = {1: "Circle", 2: "All", 3: "Triangle",
                               4: "Square", 5: "Pentagon"}
@@ -65,21 +71,19 @@ class Station:
         self.inline_list.append(station)
         station.inline_list.append(self)
     
-    def createConnections(self, stationList, stationArray):
+    # This function will be used by Board once stationList and arrays are generated
+    def createConnections(self, stationList, typeArray):
         # stationList is a list of existing stations.
         # My original idea for the algorithm:
         # for each station, add it to connections if the connection is on the 8 ordinal and cardinal directions
         #   For now, Just N, E, S, W
-        # TODO: Add NE, SE, NW, and SW
-        # TODO: Only Allow the closest station in each direction to be on the list
         
         # New Algorithm: DFS from Station location [x,y] in in each 8 directions
-        #   (0,1) is first, then rotate clockwise to (1,-1) last in the array
+        #   South (0,1) is first, then rotate CCW to SW (-1,1) last in the array
         #   If nothing is found in a direction, that slot will be null (or 0)
         #   At the end, the closest station in each direction will be in the corresponding slot
         
-        
-        
+        #TODO: Typecheck stationList and typeArray
         for ii in range(len(directionVectors)):
             status = True
             currentDir = directionVectors[ii]
@@ -88,24 +92,37 @@ class Station:
             while status:
                 currentLoc += currentDir
                 # out of bounds check:
-                if currentLoc < boardXMin or currentLoc < boardYMin or currentLoc > boardXMax or currentLoc > boardYMax:
+                if currentLoc[0] < boardXMin or currentLoc[1] < boardYMin or currentLoc[0] > boardXMax or currentLoc[1] > boardYMax:
                     self.inline_list[ii] = 0
                     status = False
                     
                 else: 
-                    # Compare the currentLoc to the array  
-                    pass
+                    # Compare the currentLoc to the typeArray
+                    # The next line is flagged as invalid syntax, I disagree
+                    if not typeArray[currentLoc[1]][currentLoc[0]]:
+                        # Do nothing if currentLoc is not on a station
+                        pass
+                    else:
+                        # If currentLoc is on a station, find that station and create a connection
+                        for jj in range(len(stationList)):
+                            if (stationList[jj].location == currentLoc).all():
+                                # TODO: Connect Stations,
+                                # Not sure if I should do two-way to cut time in half and add a check at the start of this func
+                                self.inline_list[ii] = jj
+                                status = False
+                                pass
+                    
                 
                     
                 
         
-        
-        for station in stationList:
-            # probably should have type safety
-            # print("Testing "+self.name+" and "+station.name)
-            if isInLine(self.location, station.location):
-                print("Connecting " +str(self.location)+" to "+str(station.location))
-                self.connectTwoWay(station)
+        # Old Code: Not compatible
+        # for station in stationList:
+        #     # probably should have type safety
+        #     # print("Testing "+self.name+" and "+station.name)
+        #     if isInLine(self.location, station.location):
+        #         print("Connecting " +str(self.location)+" to "+str(station.location))
+        #         self.connectTwoWay(station)
     
     def draw(self, screen, x, y):
         lh = screen.get_size()
