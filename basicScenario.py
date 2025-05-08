@@ -37,7 +37,7 @@ print(b.station_list[5])
 b.station_list[0].createConnections(b.station_list, b.stationType)
 print("Connections from", b.station_list[0])
 print(b.station_list[0].inline_list)
-print("Press 's' to shuffle, press 'd' to draw a card")
+print("Press 'a' to shuffle, press 'd' to draw a card")
 current_card = d.pull_card()
 
 

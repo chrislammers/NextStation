@@ -65,5 +65,6 @@ class Deck:
         self.deck.remove(self.top_card)
         random.shuffle(self.deck)
         self.deck.insert(0,self.top_card)
+        self.pinks = 0
     
         

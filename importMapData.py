@@ -129,6 +129,15 @@ metro_stations = []
 stationList = np.ndarray((len(geo_data["elements"]),2))
 # print(stations)
 
+# for TTC data, the webscraper is passing extra info, including the line information.
+#   This extra data describes the path of each line, and needs to be removed.
+#   The Toronto scrape worked before, so I may just store the scraped data locally next time.
+def DataValidation(geo_data):
+    for ii in range(len(geo_data["elements"])):
+    
+        print(geo_data["elements"][ii])
+
+DataValidation(geo_data)
 
 for ii in range(len(geo_data["elements"])):
     stationList[ii][0] = geo_data["elements"][ii]["lat"]
@@ -136,10 +145,11 @@ for ii in range(len(geo_data["elements"])):
 
 # kdsj
 def NormalizeData(data):
-    return 2*(data - np.min(data)) / (np.max(data) - np.min(data)) - 1
+    return (data - np.min(data)) / (np.max(data) - np.min(data))
 
-stationList[:,1] = NormalizeData(stationList[:,1])
-stationList[:,0] = NormalizeData(stationList[:,0])
+# the 2*normal-1 preps the data for the sin func
+stationList[:,1] = 2*NormalizeData(stationList[:,1])-1
+stationList[:,0] = 2*NormalizeData(stationList[:,0])-1
 
 
 # stations[:,1] = np.sin(stations[:,1]*np.pi/2)
@@ -152,6 +162,19 @@ def apply_sin_func(data):
 stationList[:,1] = apply_sin_func(stationList[:,1])
 stationList[:,0] = apply_sin_func(stationList[:,0])
 
+def remove_overlap(data):
+    uniqueData = [data[0]]
+    for ii in range(len(data)):
+        matchFlag = False
+        for jj in range(len(uniqueData)):
+            # print(data[ii],uniqueData[jj])
+            if data[ii][0] == uniqueData[jj][0] and data[ii][1] == uniqueData[jj][1]:
+                matchFlag = True
+        if not matchFlag:
+            uniqueData.append(data[ii])
+    return np.array(uniqueData)
+
+
 # Takes a set of points, rounds them to the grid (10x10)
 # unsure if I want this function (and previous) to be applied to a 2D Array, or just a 1D Array
 # This will need to use the Station object
@@ -163,34 +186,40 @@ def snap_points_to_grid(data, removeOverlap=True):
     # Normalize, then multiply by 9, then round to integer
     data[:,1] = NormalizeData(data[:,1])
     data[:,0] = NormalizeData(data[:,0])
+    # print(data)
     
     data = data * 9
     
     data = data.round()
+    # print(len(data))
+    
     
     if removeOverlap:
         # This would be cool if the station names were preserved.
         
-        # Remove overlapping stations
-        # Sort Gridpoints [y,x] by y
-        #   Then for each y, sort by x.
-        
-        # Every identical value should be adjacent to each other
-        # For each value, if the next value in the list is the same, remove it.
-        
-        # print(data)
-        pass
-    return data
-    pass
+        # For each [x,y] item in data, add to the unique list if it hasn't been already
 
-stationList = snap_points_to_grid(stationList, keepOverlap=False)
+        # this should work if station names are preserved as well.
+        
+        data = remove_overlap(data)
+        
+        # print(len(data))
+        
+        pass
+    
+    return data
+
+stationList = snap_points_to_grid(stationList, removeOverlap=True)
 # df = pd.DataFrame(geo_data["elements"])
 # df = df.filter(["lat", "lon"])
 
 
 # TODO: Create a function that takes the geodata, creates a list of Station objects
+#   figure out how to assign station Types and the Start flag
 def generate_station_list(geo_list):
     
+    for item in geo_list:
+        pass
     pass
 
 
