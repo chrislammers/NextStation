@@ -132,6 +132,8 @@ stationList = np.ndarray((len(geo_data["elements"]),2))
 # for TTC data, the webscraper is passing extra info, including the line information.
 #   This extra data describes the path of each line, and needs to be removed.
 #   The Toronto scrape worked before, so I may just store the scraped data locally next time.
+# 
+#   could be as simple as a try statement that tests if the element has a lat long?
 def DataValidation(geo_data):
     for ii in range(len(geo_data["elements"])):
     
