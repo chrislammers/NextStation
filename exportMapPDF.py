@@ -45,10 +45,11 @@ c = canvas.Canvas("game_board.pdf", pagesize=A4)
 
 # Draw static area (top and bottom)
 def draw_static_areas():
-    c.setFillColor(colors.lightgrey)
+    c.setFillColor(colors.lightblue)
     # Top static area
     c.rect(MARGIN, PAGE_HEIGHT - STATIC_AREA_HEIGHT - MARGIN, PAGE_WIDTH - 2 * MARGIN, STATIC_AREA_HEIGHT, fill=1)
     # Bottom static area
+    c.setFillColor(colors.yellow)
     c.rect(MARGIN, MARGIN, PAGE_WIDTH - 2 * MARGIN, STATIC_AREA_HEIGHT, fill=1)
 
     c.setFillColor(colors.black)

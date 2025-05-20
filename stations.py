@@ -83,7 +83,7 @@ class Station:
         #   If nothing is found in a direction, that slot will be null (or 0)
         #   At the end, the closest station in each direction will be in the corresponding slot
         
-        #TODO: Typecheck stationList and typeArray
+        #TODO: Typecheck stationList and typeArray (?)
         for ii in range(len(directionVectors)):
             status = True
             currentDir = directionVectors[ii]

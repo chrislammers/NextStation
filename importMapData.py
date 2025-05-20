@@ -219,10 +219,19 @@ stationList = snap_points_to_grid(stationList, removeOverlap=True)
 # TODO: Create a function that takes the geodata, creates a list of Station objects
 #   figure out how to assign station Types and the Start flag
 def generate_station_list(geo_list):
-    
+    # geo_list[0] is the x, geo_list[1] is y. anything above that can be extra. (names etc.)
+    station_list = []
     for item in geo_list:
-        pass
-    pass
+        x = item[0]
+        y = item[1]
+        # TODO: assign:
+        #   type (everything is either 1,3,4,5),
+        #   start (0 or 1. [At least?] one per type),
+        #   attraction (spread out throughout the board, maybe 1 in 5 stations)
+        st_type = 1
+        isAttr = 0
+        station_list.append(stations.Station(x, y, st_type, isAttr))
+    return station_list
 
 
 
