@@ -65,6 +65,10 @@ def to_png(stationList, city):
 
 # Individual file parsing:
 
+# TODO: Enhance the introduction. 
+#   Use OSM prompts to retrieve city/transit system names
+#   check for bad data. if data is bad (missing, not coordinates), ask above again
+
 overpass_url = "http://overpass-api.de/api/interpreter"
 
 loc = "Greater London"
@@ -134,11 +138,13 @@ stationList = np.ndarray((len(geo_data["elements"]),2))
 #   The Toronto scrape worked before, so I may just store the scraped data locally next time.
 # 
 #   could be as simple as a try statement that tests if the element has a lat long?
+# TODO: see above^
 def DataValidation(geo_data):
     for ii in range(len(geo_data["elements"])):
     
-        print(geo_data["elements"][ii])
-
+        # print(geo_data["elements"][ii])
+        pass
+    
 DataValidation(geo_data)
 
 for ii in range(len(geo_data["elements"])):
@@ -215,16 +221,13 @@ stationList = snap_points_to_grid(stationList, removeOverlap=True)
 # df = pd.DataFrame(geo_data["elements"])
 # df = df.filter(["lat", "lon"])
 
-
-# TODO: Create a function that takes the geodata, creates a list of Station objects
-#   figure out how to assign station Types and the Start flag
 def generate_station_list(geo_list):
     # geo_list[0] is the x, geo_list[1] is y. anything above that can be extra. (names etc.)
     station_list = []
     for item in geo_list:
         x = item[0]
         y = item[1]
-        # TODO: assign:
+        # TODO: assign variables to the station:
         #   type (everything is either 1,3,4,5),
         #   start (0 or 1. [At least?] one per type),
         #   attraction (spread out throughout the board, maybe 1 in 5 stations)
@@ -233,7 +236,10 @@ def generate_station_list(geo_list):
         station_list.append(stations.Station(x, y, st_type, isAttr))
     return station_list
 
-
+staList = generate_station_list(stationList)
+print("Object List Length:", len(staList))
+print("Geo List Length:",len(stationList))
+print("First Geo Object:", staList[0])
 
 if output_to_png:
     to_png(stationList, cityDict[usrInp])
