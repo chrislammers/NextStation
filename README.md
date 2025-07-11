@@ -18,9 +18,14 @@ requirements in requirements.txt
 This code is incomplete. It is nowhere close to a finished product.
 
 
-## In Developement: 23/02/2025
+## In Developement: 
+### 23/02/2025
 
 the file "importMapData.py" is experimental code that pulls OSM data and aligns it to the game grid.
 
 Eventually it will get blended in with the rest of the code, but for now acts as a standalone set of functions
+
+### 11/07/2025
+
+
 
